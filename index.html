@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>晴天小猪猪· Grok快速接入</title>
+    <meta name="description" content="内网 Grok / xAI 中转站 · Base URL · API Key · 模型列表" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <div class="bg-layer" aria-hidden="true">
+      <div class="grid-mesh"></div>
+      <div class="orb orb-a"></div>
+      <div class="orb orb-b"></div>
+      <div class="orb orb-c"></div>
+      <div class="scanline"></div>
+    </div>
+
+    <div class="page">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <div>
+            <p class="brand-kicker">INTERNAL RELAY</p>
+            <h1 id="site-title">晴天小猪猪中转站</h1>
+          </div>
+        </div>
+        <div class="status-pill" id="status-pill" role="status">
+          <span class="status-dot"></span>
+          <span id="status-text">ONLINE</span>
+        </div>
+      </header>
+
+      <!-- 动态口号：逐字霓虹 + 流光 -->
+      <section class="motto" aria-label="团队口号">
+        <div class="motto-inner glass">
+          <span class="motto-badge">MISSION</span>
+          <p class="motto-text" id="motto-text" data-text="我们将不再贫穷">我们将不再贫穷</p>
+          <span class="motto-underline" aria-hidden="true"></span>
+        </div>
+      </section>
+
+      <section class="hero glass">
+        <div class="hero-copy">
+          <p class="eyebrow">OpenAI Compatible API</p>
+          <h2 id="site-subtitle">三步接入 · 即刻对话</h2>
+          <p class="lede">复制 Base URL 与 API Key，在 Cursor / Claude Code / 任意 OpenAI SDK 中填入即可。支持 Grok 4.5、多 Agent、Imagine
+            等模型。</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#credentials">立即接入</a>
+            <a class="btn btn-ghost" href="#models">浏览模型</a>
+          </div>
+        </div>
+        <div class="hero-stats" aria-label="站点概览">
+          <div class="stat">
+            <span class="stat-label">端口</span>
+            <span class="stat-value">:8317</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">模型</span>
+            <span class="stat-value" id="model-count">—</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Provider</span>
+            <span class="stat-value">xAI</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="credentials" class="section">
+        <div class="section-head">
+          <h3>接入凭证</h3>
+          <p>点击复制按钮即可写入剪贴板，供同事快速配置。</p>
+        </div>
+
+        <div class="cred-grid">
+          <article class="cred-card glass">
+            <div class="cred-top">
+              <div>
+                <p class="cred-label">Base URL</p>
+                <p class="cred-hint">OpenAI SDK / 客户端 · 根路径（不含 /v1）</p>
+              </div>
+              <button type="button" class="icon-btn" data-copy-target="base-url" aria-label="复制 Base URL">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="9" y="9" width="11" height="11" rx="2" />
+                  <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+                </svg>
+                <span>复制</span>
+              </button>
+            </div>
+            <code class="cred-value mono" id="base-url">—</code>
+          </article>
+
+          <article class="cred-card glass">
+            <div class="cred-top">
+              <div>
+                <p class="cred-label">API Key</p>
+                <p class="cred-hint">Bearer Token · 请勿外传公网</p>
+              </div>
+              <div class="cred-actions">
+                <button type="button" class="icon-btn" id="toggle-key" aria-label="显示或隐藏 API Key" aria-pressed="false">
+                  <svg id="eye-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                    stroke-width="1.8">
+                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  <span id="toggle-key-text">显示</span>
+                </button>
+                <button type="button" class="icon-btn" data-copy-target="api-key" aria-label="复制 API Key">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="9" y="9" width="11" height="11" rx="2" />
+                    <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+                  </svg>
+                  <span>复制</span>
+                </button>
+              </div>
+            </div>
+            <code class="cred-value mono" id="api-key" data-masked="true">—</code>
+          </article>
+        </div>
+
+        <div class="quick-copy glass">
+          <div class="quick-copy-text">
+            <p class="cred-label">一键复制全部</p>
+            <p class="cred-hint">Base URL + API Key 成对写入剪贴板</p>
+          </div>
+          <button type="button" class="btn btn-primary" id="copy-all">复制凭证包</button>
+        </div>
+      </section>
+
+      <section id="models" class="section">
+        <div class="section-head row">
+          <div>
+            <h3>支持的模型</h3>
+            <p>点击模型 ID 即可复制，可直接填入客户端 model 字段。</p>
+          </div>
+          <label class="search-box glass">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"
+              aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+            <input type="search" id="model-search" placeholder="搜索模型 ID / 名称…" autocomplete="off" />
+          </label>
+        </div>
+
+        <div class="filter-bar" id="filter-bar" role="toolbar" aria-label="模型筛选"></div>
+        <div class="model-list" id="model-list" role="list"></div>
+        <p class="empty-state" id="empty-state" hidden>没有匹配的模型</p>
+      </section>
+
+      <section id="snippets" class="section">
+        <div class="section-head row">
+          <div>
+            <h3>快速调用</h3>
+            <p>OpenAI 兼容接口示例，替换后可直接运行。</p>
+          </div>
+          <div class="tabs" role="tablist">
+            <button type="button" class="tab active" data-tab="curl" role="tab" aria-selected="true">cURL</button>
+            <button type="button" class="tab" data-tab="python" role="tab" aria-selected="false">Python</button>
+            <button type="button" class="tab" data-tab="js" role="tab" aria-selected="false">Node.js</button>
+          </div>
+        </div>
+
+        <div class="snippet glass">
+          <div class="snippet-bar">
+            <span class="snippet-lang" id="snippet-lang">bash</span>
+            <button type="button" class="icon-btn" id="copy-snippet" aria-label="复制代码示例">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="9" y="9" width="11" height="11" rx="2" />
+                <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+              </svg>
+              <span>复制代码</span>
+            </button>
+          </div>
+          <pre><code class="mono" id="snippet-code"></code></pre>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>仅限内网同事使用 · 请勿将 API Key 提交到公开仓库</p>
+        <p class="footer-meta">CLIProxyAPI · xAI Grok Relay</p>
+      </footer>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+
+</html>
